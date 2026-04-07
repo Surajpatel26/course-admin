@@ -10,6 +10,8 @@ import { BlogEditor } from './pages/BlogEditor';
 import { Testimonials } from './pages/Testimonials';
 import { TestimonialEditor } from './pages/TestimonialEditor';
 import { Contacts } from './pages/Contacts';
+import { Users } from './pages/Users';
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -25,6 +27,7 @@ export default function App() {
           }
         >
           <Route index element={<Overview />} />
+          <Route path="users" element={<Users />} />
           <Route path="courses" element={<Courses />} />
           <Route path="courses/:id" element={<CourseEditor />} />
           <Route path="blog" element={<Blogs />} />
