@@ -11,6 +11,8 @@ import { Testimonials } from './pages/Testimonials';
 import { TestimonialEditor } from './pages/TestimonialEditor';
 import { Contacts } from './pages/Contacts';
 import { Users } from './pages/Users';
+import { UpcomingCourses } from './pages/UpcomingCourses';
+import { UpcomingCourseEditor } from './pages/UpcomingCourseEditor';
 
 export default function App() {
   return (
@@ -34,6 +36,8 @@ export default function App() {
           <Route path="blog/:id" element={<BlogEditor />} />
           <Route path="testimonials" element={<Testimonials />} />
           <Route path="testimonials/:id" element={<TestimonialEditor />} />
+          <Route path="upcoming" element={<UpcomingCourses />} />
+          <Route path="upcoming/:id" element={<UpcomingCourseEditor />} />
           <Route path="contacts" element={<Contacts />} />
         </Route>
       </Routes>

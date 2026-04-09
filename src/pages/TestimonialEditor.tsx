@@ -52,7 +52,7 @@ export function TestimonialEditor() {
       if (isNew) {
         await api.post('/admin/testimonials', {
           ...form,
-          id: form.id || Date.now().toString(),
+          id: form.id || '',
         });
       } else {
         await api.put(`/admin/testimonials/${id}`, form);

@@ -16,6 +16,13 @@ body {
   @apply bg-slate-950 text-slate-100;
 }
 
+@layer base {
+  input, textarea, select {
+    color: inherit !important;
+    background-color: transparent;
+  }
+}
+
 /* Custom Prose-like styles for Blog Editor & Preview */
 .prose {
   @apply text-slate-300 leading-relaxed;

@@ -114,9 +114,8 @@ export function CourseEditor() {
     setError(null);
     try {
       const nextOrder = (sectionsSorted.at(-1)?.sortOrder ?? 0) + 1;
-      const newSectionId = `${courseId}-${Date.now()}`;
       const created = await api.post<CourseSection>(`/admin/courses/${courseId}/sections`, {
-        id: newSectionId,
+        id: '',
         title: 'New Section',
         duration: '15m',
         lessons: 1,
@@ -220,10 +219,11 @@ export function CourseEditor() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="block">
-              <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">ID</div>
+              <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">ID {isNew && '(Auto-generated)'}</div>
               <input
                 disabled={!isNew}
                 value={course.id}
+                placeholder={isNew ? 'Leave empty to auto-generate' : ''}
                 onChange={(e) => setCourse((c) => ({ ...c, id: e.target.value }))}
                 className="w-full rounded-2xl bg-slate-950/60 border border-slate-800 px-4 py-3 outline-none focus:border-indigo-500 disabled:opacity-60"
               />

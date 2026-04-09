@@ -104,6 +104,19 @@ export function AdminLayout() {
                 Testimonials
               </NavLink>
               <NavLink
+                to="/upcoming"
+                className={({ isActive }) =>
+                  `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold border ${
+                    isActive
+                      ? 'bg-indigo-500/15 border-indigo-500/30 text-indigo-200'
+                      : 'bg-transparent border-transparent text-slate-300 hover:bg-slate-800/60 hover:border-slate-700'
+                  }`
+                }
+              >
+                <BookOpen className="w-5 h-5" />
+                Upcoming
+              </NavLink>
+              <NavLink
                 to="/contacts"
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold border ${

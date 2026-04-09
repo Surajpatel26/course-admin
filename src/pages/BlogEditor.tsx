@@ -64,7 +64,7 @@ export function BlogEditor() {
       const sanitizedId = post.id.trim().replace(/^\/+|\/+$/g, '');
       const postToSave = { ...post, id: sanitizedId, content: contentHtml };
       if (isNew) {
-        const id = sanitizedId || `${Date.now()}`;
+        const id = sanitizedId || '';
         const created = await api.post<BlogPost>('/admin/blog', { ...postToSave, id });
         navigate(`/blog/${created.id}`, { replace: true });
         return;
@@ -148,12 +148,12 @@ export function BlogEditor() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <label className="block">
-              <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Unique ID (URL)</div>
+              <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Unique ID (URL) {isNew && '(Auto-generated)'}</div>
               <input
                 disabled={!isNew}
                 value={post.id}
                 onChange={(e) => setPost((p) => ({ ...p, id: e.target.value }))}
-                placeholder="e-g-my-awesome-post"
+                placeholder={isNew ? "Leave blank to auto-generate" : "e-g-my-awesome-post"}
                 className="w-full rounded-2xl bg-slate-950/60 border border-slate-800 px-4 py-3 outline-none focus:border-indigo-500 disabled:opacity-60"
               />
             </label>
