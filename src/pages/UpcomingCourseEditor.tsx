@@ -64,7 +64,7 @@ export function UpcomingCourseEditor() {
   const handleDelete = async () => {
     if (!window.confirm('Delete this upcoming course?')) return;
     try {
-      await api.delete(`/admin/upcoming-courses/${id}`);
+      await api.del(`/admin/upcoming-courses/${id}`);
       navigate('/upcoming');
     } catch (e: any) {
       setError(e.message);
