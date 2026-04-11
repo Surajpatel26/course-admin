@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 
 export type Course = {
@@ -89,7 +89,7 @@ export function Courses() {
         <table className="w-full text-sm">
           <thead className="bg-slate-900/60">
             <tr className="text-left text-slate-300">
-              <th className="px-4 py-3 font-black">ID</th>
+              <th className="px-4 py-3 font-black w-16 text-center">Image</th>
               <th className="px-4 py-3 font-black">Title</th>
               <th className="px-4 py-3 font-black">Category</th>
               <th className="px-4 py-3 font-black">Price</th>
@@ -112,14 +112,43 @@ export function Courses() {
             ) : (
               filtered.map((c) => (
                 <tr key={c.id} className="hover:bg-slate-900/30">
-                  <td className="px-4 py-3 font-mono text-slate-300">{c.id}</td>
+                  <td className="px-4 py-3 text-center align-middle relative">
+                    {c.image ? (
+                      <img src={c.image} alt={c.title} className="w-10 h-10 rounded-xl object-cover border border-slate-700 inline-block" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-[9px] uppercase font-bold text-slate-500 inline-flex mx-auto">
+                        None
+                      </div>
+                    )}
+                  </td>
                   <td className="px-4 py-3 font-bold text-slate-100">{c.title}</td>
                   <td className="px-4 py-3 text-slate-300">{c.category || '—'}</td>
                   <td className="px-4 py-3 text-slate-300">{c.price != null ? `$${c.price}` : '—'}</td>
                   <td className="px-4 py-3 text-right">
-                    <Link to={`/courses/${c.id}`} className="text-indigo-300 hover:text-indigo-200 font-black">
-                      Edit
-                    </Link>
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        to={`/courses/${c.id}`}
+                        className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                        title="Edit"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Link>
+                      <button
+                        onClick={async () => {
+                          if (!confirm('Delete this course?')) return;
+                          try {
+                            await api.del(`/admin/courses/${c.id}`);
+                            setCourses((prev) => prev.filter((item) => item.id !== c.id));
+                          } catch (e: unknown) {
+                            setError(e instanceof Error ? e.message : 'Failed to delete course');
+                          }
+                        }}
+                        className="p-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

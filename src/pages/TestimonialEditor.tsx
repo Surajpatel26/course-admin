@@ -105,17 +105,8 @@ export function TestimonialEditor() {
       <form onSubmit={handleSave} className="space-y-6">
         <div className="rounded-3xl bg-slate-900/50 border border-slate-800 p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {isNew && (
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-slate-300">ID (optional, auto-generated)</label>
-                <input
-                  value={form.id}
-                  onChange={(e) => setForm({ ...form, id: e.target.value })}
-                  placeholder="e.g. t123"
-                  className="w-full rounded-xl bg-slate-950 border border-slate-800 px-4 py-3 outline-none focus:border-indigo-500"
-                />
-              </div>
-            )}
+            {/* ID Input removed; backend handles generation */}
+
 
             <div className="space-y-2">
               <label className="text-sm font-bold text-slate-300">Name</label>

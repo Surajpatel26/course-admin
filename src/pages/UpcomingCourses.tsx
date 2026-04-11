@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 
 export type UpcomingCourse = {
@@ -119,9 +119,30 @@ export function UpcomingCourses() {
                   <td className="px-4 py-3 text-slate-300">{c.category || '—'}</td>
                   <td className="px-4 py-3 text-slate-300">{c.date || '—'}</td>
                   <td className="px-4 py-3 text-right">
-                    <Link to={`/upcoming/${c.id}`} className="text-indigo-300 hover:text-indigo-200 font-black">
-                      Edit
-                    </Link>
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        to={`/upcoming/${c.id}`}
+                        className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                        title="Edit"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Link>
+                      <button
+                        onClick={async () => {
+                          if (!confirm('Delete this upcoming course?')) return;
+                          try {
+                            await api.del(`/admin/upcoming-courses/${c.id}`);
+                            setCourses((prev) => prev.filter((item) => item.id !== c.id));
+                          } catch (e: unknown) {
+                            setError(e instanceof Error ? e.message : 'Failed to delete upcoming course');
+                          }
+                        }}
+                        className="p-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

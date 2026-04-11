@@ -23,7 +23,7 @@ const emptyCourse: Course = {
   rating: 4.8,
   students: 0,
   duration: '',
-  category: 'Development',
+  category: '',
   description: '',
   level: 'Intermediate',
   whatYouWillLearnJson: JSON.stringify(
@@ -93,12 +93,12 @@ export function CourseEditor() {
     try {
       if (isNew) {
         const created = await api.post<Course>('/admin/courses', course);
-        navigate(`/courses/${created.id}`, { replace: true });
+        navigate(`/courses`, { replace: true });
         return;
       }
       if (!courseId) return;
-      const updated = await api.put<Course>(`/admin/courses/${courseId}`, course);
-      setCourse(updated);
+      await api.put<Course>(`/admin/courses/${courseId}`, course);
+      navigate(`/courses`, { replace: true });
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Save failed');
     } finally {
@@ -218,18 +218,7 @@ export function CourseEditor() {
           <div className="text-sm font-black mb-4">Course fields</div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label className="block">
-              <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">ID {isNew && '(Auto-generated)'}</div>
-              <input
-                disabled={!isNew}
-                value={course.id}
-                placeholder={isNew ? 'Leave empty to auto-generate' : ''}
-                onChange={(e) => setCourse((c) => ({ ...c, id: e.target.value }))}
-                className="w-full rounded-2xl bg-slate-950/60 border border-slate-800 px-4 py-3 outline-none focus:border-indigo-500 disabled:opacity-60"
-              />
-            </label>
-
-            <label className="block">
+            <label className="block md:col-span-2">
               <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Title</div>
               <input
                 value={course.title}
@@ -240,11 +229,18 @@ export function CourseEditor() {
 
             <label className="block">
               <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Category</div>
-              <input
+              <select
                 value={course.category || ''}
                 onChange={(e) => setCourse((c) => ({ ...c, category: e.target.value }))}
-                className="w-full rounded-2xl bg-slate-950/60 border border-slate-800 px-4 py-3 outline-none focus:border-indigo-500"
-              />
+                className="w-full rounded-2xl bg-slate-950/60 border border-slate-800 px-4 py-3 outline-none focus:border-indigo-500 appearance-none"
+              >
+                <option value="" disabled>Select a category</option>
+                <option value="AI ML">AI ML</option>
+                <option value="Frontend">Frontend</option>
+                <option value="Backend">Backend</option>
+                <option value="Database">Database</option>
+                <option value="Data Science">Data Science</option>
+              </select>
             </label>
 
             <label className="block">

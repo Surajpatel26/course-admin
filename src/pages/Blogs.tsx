@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Pencil, Trash2 } from 'lucide-react';
 import { api } from '../lib/api';
 
 export type BlogPost = {
@@ -88,7 +88,7 @@ export function Blogs() {
         <table className="w-full text-sm">
           <thead className="bg-slate-900/60">
             <tr className="text-left text-slate-300">
-              <th className="px-4 py-3 font-black">ID</th>
+              <th className="px-4 py-3 font-black w-16 text-center">Image</th>
               <th className="px-4 py-3 font-black">Title</th>
               <th className="px-4 py-3 font-black">Category</th>
               <th className="px-4 py-3 font-black">Author</th>
@@ -112,15 +112,44 @@ export function Blogs() {
             ) : (
               filtered.map((p) => (
                 <tr key={p.id} className="hover:bg-slate-900/30">
-                  <td className="px-4 py-3 font-mono text-slate-300">{p.id}</td>
+                  <td className="px-4 py-3 text-center align-middle relative">
+                    {p.image ? (
+                      <img src={p.image} alt={p.title} className="w-10 h-10 rounded-xl object-cover border border-slate-700 inline-block" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-[9px] uppercase font-bold text-slate-500 inline-flex mx-auto">
+                        None
+                      </div>
+                    )}
+                  </td>
                   <td className="px-4 py-3 font-bold text-slate-100">{p.title}</td>
                   <td className="px-4 py-3 text-slate-300">{p.category || '—'}</td>
                   <td className="px-4 py-3 text-slate-300">{p.author || '—'}</td>
                   <td className="px-4 py-3 text-slate-300">{p.date || '—'}</td>
                   <td className="px-4 py-3 text-right">
-                    <Link to={`/blog/${p.id}`} className="text-indigo-300 hover:text-indigo-200 font-black">
-                      Edit
-                    </Link>
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
+                        to={`/blog/${p.id}`}
+                        className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                        title="Edit"
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Link>
+                      <button
+                        onClick={async () => {
+                          if (!confirm('Delete this blog post?')) return;
+                          try {
+                            await api.del(`/admin/blog/${p.id}`);
+                            setPosts((prev) => prev.filter((item) => item.id !== p.id));
+                          } catch (e: unknown) {
+                            setError(e instanceof Error ? e.message : 'Failed to delete blog post');
+                          }
+                        }}
+                        className="p-2 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
