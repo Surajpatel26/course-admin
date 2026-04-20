@@ -92,7 +92,7 @@ export function CourseEditor() {
     setIsSaving(true);
     try {
       if (isNew) {
-        const created = await api.post<Course>('/admin/courses', course);
+        await api.post<Course>('/admin/courses', course);
         navigate(`/courses`, { replace: true });
         return;
       }
