@@ -67,5 +67,19 @@ export const api = {
     const data = await parseJsonSafe(res);
     if (!res.ok) throw new Error((data && data.error) || `API error: ${res.status}`);
   },
+
+  async upload<T>(endpoint: string, formData: FormData): Promise<T> {
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
+      },
+      body: formData,
+    });
+    const data = await parseJsonSafe(res);
+    if (!res.ok) throw new Error((data && data.error) || `API error: ${res.status}`);
+    return data as T;
+  },
 };
+
 

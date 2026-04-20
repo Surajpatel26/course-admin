@@ -13,6 +13,7 @@ import { Contacts } from './pages/Contacts';
 import { Users } from './pages/Users';
 import { UpcomingCourses } from './pages/UpcomingCourses';
 import { UpcomingCourseEditor } from './pages/UpcomingCourseEditor';
+import { AboutEditor } from './pages/AboutEditor';
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="upcoming" element={<UpcomingCourses />} />
           <Route path="upcoming/:id" element={<UpcomingCourseEditor />} />
           <Route path="contacts" element={<Contacts />} />
+          <Route path="about" element={<AboutEditor />} />
         </Route>
       </Routes>
     </BrowserRouter>
